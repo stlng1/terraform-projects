@@ -17,18 +17,32 @@ resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = var.enable_dns_support
   enable_dns_hostnames = var.enable_dns_hostnames
-  # #enable_classiclink             = var.enable_classiclink
+  # enable_classiclink             = var.enable_classiclink
   # enable_classiclink_dns_support = var.enable_classiclink_dns_support
 
-  tags = {
-    Name = "main-vpc"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = format("%s-vpc", var.project_name)
+    },
+  )
 }
 
 # Get list of availability zones
 data "aws_availability_zones" "available" {
   state = "available"
 }
+
+# # get current user account id, user id
+# data "aws_caller_identity" "current" {}
+
+# output "account_id" {
+#   value = data.aws_caller_identity.current.account_id
+# }
+
+# output "caller_user" {
+#   value = data.aws_caller_identity.current.user_id
+# }
 
 # create public subnets
 resource "aws_subnet" "PublicSubnet" {
@@ -38,9 +52,12 @@ resource "aws_subnet" "PublicSubnet" {
   map_public_ip_on_launch = true
   availability_zone       = data.aws_availability_zones.available.names[count.index]
 
-  tags = {
-    Name = "${format("PublicSubnet-%02d", count.index + 1)}"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "${format("PublicSubnet-%02d", count.index + 1)}"
+    }
+  )
 }
 
 # create private compute subnets
@@ -51,9 +68,12 @@ resource "aws_subnet" "Compute_PrivateSubnet" {
   map_public_ip_on_launch = false
   availability_zone       = data.aws_availability_zones.available.names[count.index]
 
-  tags = {
-    Name = "${format("ComputePrivateSubnet-%02d", count.index + 1)}"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "${format("ComputePrivateSubnet-%02d", count.index + 1)}"
+    }
+  )
 }
 
 # create private datalayer subnets
@@ -64,7 +84,12 @@ resource "aws_subnet" "Data_PrivateSubnet" {
   map_public_ip_on_launch = false
   availability_zone       = data.aws_availability_zones.available.names[count.index]
 
-  tags = {
-    Name = "${format("DataPrivateSubnet-%02d", count.index + 1)}"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "${format("DataPrivateSubnet-%02d", count.index + 1)}"
+    }
+  )
 }
+
+

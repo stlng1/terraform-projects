@@ -14,13 +14,13 @@ variable "enable_dns_hostnames" {
   type = bool
 }
 
-# variable "enable_classiclink" {
-#   type = bool
-# }
+variable "enable_classiclink" {
+  type = bool
+}
 
-# variable "enable_classiclink_dns_support" {
-#   type = bool
-# }
+variable "enable_classiclink_dns_support" {
+  type = bool
+}
 
 variable "public_subnets" {
   type = list(any)
@@ -33,3 +33,14 @@ variable "compute_private_subnets" {
 variable "data_private_subnets" {
   type = list(any)
 }
+
+variable "tags" {
+  description = "A mapping of tags to assign to all resources"
+  type        = map(string)
+  default     = {}
+}
+
+variable "project_name" {
+  type = string
+}
+
