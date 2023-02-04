@@ -33,17 +33,6 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-# # get current user account id, user id
-# data "aws_caller_identity" "current" {}
-
-# output "account_id" {
-#   value = data.aws_caller_identity.current.account_id
-# }
-
-# output "caller_user" {
-#   value = data.aws_caller_identity.current.user_id
-# }
-
 # create public subnets
 resource "aws_subnet" "PublicSubnet" {
   count                   = length(var.public_subnets)
