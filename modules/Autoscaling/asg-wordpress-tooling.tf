@@ -1,7 +1,7 @@
 # launch template for wordpress
 
 resource "aws_launch_template" "wordpress-launch-template" {
-  image_id               = "webserver_ami"
+  image_id               = "var.ami"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.webserver-sg.id]
 
@@ -38,11 +38,11 @@ resource "aws_launch_template" "wordpress-launch-template" {
 
 resource "aws_autoscaling_group" "wordpressASG" {
   name                      = "wordpressASG"
-  max_size                  = 2
-  min_size                  = 1
-  health_check_grace_period = 300
+  max_size                  = var.max_size_wordpress-asg
+  min_size                  = var.min_size_wordpress-asg
+  health_check_grace_period = var.health_grace_period_wordpress-asg
   health_check_type         = "ELB"
-  desired_capacity          = 1
+  desired_capacity          = var.capacity_wordpress-asg
   vpc_zone_identifier = [
 
     aws_subnet.Compute_PrivateSubnet[0].id,
@@ -68,7 +68,7 @@ resource "aws_autoscaling_attachment" "asg_attachment_wordpress" {
 
 # launch template for tooling
 resource "aws_launch_template" "tooling-launch-template" {
-  image_id               = "webserver_ami"
+  image_id               = "var.ami"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.webserver-sg.id]
 
@@ -105,11 +105,11 @@ resource "aws_launch_template" "tooling-launch-template" {
 
 resource "aws_autoscaling_group" "toolingASG" {
   name                      = "toolingASG"
-  max_size                  = 2
-  min_size                  = 1
-  health_check_grace_period = 300
+  max_size                  = var.max_size_tooling-asg
+  min_size                  = var.min_size_tooling-asg
+  health_check_grace_period = var.health_grace_period_tooling-asg
   health_check_type         = "ELB"
-  desired_capacity          = 1
+  desired_capacity          = var.capacity_tooling-asg
 
   vpc_zone_identifier = [
 

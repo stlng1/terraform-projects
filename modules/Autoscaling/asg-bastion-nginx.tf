@@ -1,10 +1,10 @@
 #### creating sns topic for all the auto scaling groups
-resource "aws_sns_topic" "david-sns" {
+resource "aws_sns_topic" "manager-sns" {
   name = "Default_CloudWatch_Alarms_Topic"
 }
 
 #creating notification for all the auto scaling groups
-resource "aws_autoscaling_notification" "david_notifications" {
+resource "aws_autoscaling_notification" "manager_notifications" {
   group_names = [
     aws_autoscaling_group.bastionASG.name,
     aws_autoscaling_group.nginxASG.name,
@@ -18,7 +18,7 @@ resource "aws_autoscaling_notification" "david_notifications" {
     "autoscaling:EC2_INSTANCE_TERMINATE_ERROR",
   ]
 
-  topic_arn = aws_sns_topic.david-sns.arn
+  topic_arn = aws_sns_topic.manager-sns.arn
 }
 
 #launch template for bastion
@@ -27,7 +27,7 @@ resource "random_shuffle" "az_list" {
 }
 
 resource "aws_launch_template" "bastion-launch-template" {
-  image_id               = "var.bastion_ami"
+  image_id               = "var.ami"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
 
@@ -63,11 +63,11 @@ resource "aws_launch_template" "bastion-launch-template" {
 
 resource "aws_autoscaling_group" "bastionASG" {
   name                      = "bastionASG"
-  max_size                  = 2
-  min_size                  = 1
-  health_check_grace_period = 300
+  max_size                  = var.max_size_bastion-asg
+  min_size                  = var.min_size_bastion-asg
+  health_check_grace_period = var.health_grace_period_bastion-asg
   health_check_type         = "ELB"
-  desired_capacity          = 1
+  desired_capacity          = var.capacity_bastion-asg
 
   vpc_zone_identifier = [
     aws_subnet.PublicSubnet[0].id,
@@ -89,7 +89,7 @@ resource "aws_autoscaling_group" "bastionASG" {
 # launch template for nginx
 
 resource "aws_launch_template" "nginx-launch-template" {
-  image_id               = "var.bastion_ami"
+  image_id               = "var.ami"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.nginx-sg.id]
 
@@ -121,15 +121,15 @@ resource "aws_launch_template" "nginx-launch-template" {
   user_data = filebase64("${path.module}/nginx.sh")
 }
 
-# ------ Autoscslaling group for reverse proxy nginx ---------
+# ------ Autoscaling group for reverse proxy nginx ---------
 
 resource "aws_autoscaling_group" "nginxASG" {
   name                      = "nginxASG"
-  max_size                  = 2
-  min_size                  = 1
-  health_check_grace_period = 300
+  max_size                  = var.max_size_nginx-asg
+  min_size                  = var.min_size_nginx-asg
+  health_check_grace_period = var.health_grace_period_nginx-asg
   health_check_type         = "ELB"
-  desired_capacity          = 1
+  desired_capacity          = var.capacity_nginx-asg
 
   vpc_zone_identifier = [
     aws_subnet.PublicSubnet[0].id,

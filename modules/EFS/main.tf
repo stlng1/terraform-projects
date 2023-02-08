@@ -1,5 +1,5 @@
 # create key from key management system
-resource "aws_kms_key" "ACS-kms" {
+resource "aws_kms_key" "ACS_kms" {
   description = "KMS key "
   policy      = <<EOF
   {
@@ -9,7 +9,7 @@ resource "aws_kms_key" "ACS-kms" {
     {
       "Sid": "Enable IAM User Permissions",
       "Effect": "Allow",
-      "Principal": { "AWS": "arn:aws:iam::${var.account_no}:user/segun" },
+      "Principal": { "AWS": "${var.user_arn}" },
       "Action": "kms:*",
       "Resource": "*"
     }
@@ -61,7 +61,7 @@ resource "aws_efs_access_point" "wordpress" {
   }
 
   root_directory {
-    path = "/wordpress"
+    path = "/${var.access_point[0]}"
 
     creation_info {
       owner_gid   = 0
@@ -83,7 +83,7 @@ resource "aws_efs_access_point" "tooling" {
 
   root_directory {
 
-    path = "/tooling"
+    path = "/${var.access_point[1]}"
 
     creation_info {
       owner_gid   = 0

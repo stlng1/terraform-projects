@@ -6,7 +6,7 @@ resource "aws_db_subnet_group" "ACS-rds" {
   tags = merge(
     var.tags,
     {
-      Name = "ACS-rds"
+      Name = "ACS-database"
     },
   )
 }

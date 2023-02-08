@@ -1,4 +1,4 @@
-#create an ALB to balance the traffic between the Instances
+#create an ALB to balance incoming internet traffic between the Instances
 resource "aws_lb" "publicALB" {
   name     = "publicALB"
   internal = false
@@ -44,7 +44,7 @@ resource "aws_lb_listener" "nginx-listner" {
   load_balancer_arn = aws_lb.publicALB.arn
   port              = 443
   protocol          = "HTTPS"
-  certificate_arn   = aws_acm_certificate.orieja.arn
+  certificate_arn   = aws_acm_certificate.root_domain_certificate.arn
 
   default_action {
     type             = "forward"
@@ -57,7 +57,7 @@ resource "aws_lb_listener" "nginx-listner" {
 #---------------------------------
 
 resource "aws_lb" "privateALB" {
-  name     = "ialb"
+  name     = "privateALB"
   internal = true
   security_groups = [
     aws_security_group.privateALB-sg.id,
@@ -124,7 +124,7 @@ resource "aws_lb_listener" "web-listener" {
   load_balancer_arn = aws_lb.privateALB.arn
   port              = 443
   protocol          = "HTTPS"
-  certificate_arn   = aws_acm_certificate.orieja.arn
+  certificate_arn   = aws_acm_certificate.root_domain_certificate.arn
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.wordpressTG.arn
@@ -144,7 +144,7 @@ resource "aws_lb_listener_rule" "tooling-listener" {
 
   condition {
     host_header {
-      values = ["tooling.orieja.com.ng"]
+      values = "domain_subnets[1]"
     }
   }
 }
