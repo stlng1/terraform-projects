@@ -1,7 +1,13 @@
 variable "ami" {
-  type        = string
-  description = "AMI ID for the launch template"
+  type        = map
+  description = "AMI image_ids for the launch templates"
+  default = {}
 }
+
+# variable "ami-webservers" {
+#   type        = string
+#   description = "AMI image_id for the webservers (tooling and wordpress) launch templates"
+# }
 
 variable "keypair" {
   type        = string
@@ -14,85 +20,30 @@ variable "tags" {
   default     = {}
 }
 
-variable "max_size_nginx-asg" {
-  type        = number
-  description = "defines the max_size for nginx asg instances"
+variable "max_size_asg" {
+  description = "A mapping of he max_size for asg instances."
+  type        = map(string)
+  default     = {}
 }
 
-variable "min_size_nginx-asg" {
-  type        = number
-  description = "defines the min_size for nginx asg instances"
+variable "min_size_asg" {
+  description = "A mapping of he max_size for asg instances."
+  type        = map(string)
+  default     = {}
 }
 
-variable "capacity_nginx-asg" {
-  type        = number
-  description = "defines the desired capacity for nginx asg instances"
+variable "capacity_asg" {
+  description = "A mapping of the desired capacity for asg instances."
+  type        = map(string)
+  default     = {}
 }
 
-variable "health_grace_period_nginx-asg" {
-  type        = number
-  description = "defines the health_check_grace_period for nginx asg instances"
+variable "health_grace_period_asg" {
+  description = "A mapping of the health_check_grace_period for asg instances."
+  type        = map(string)
+  default     = {}
 }
 
-variable "max_size_bastion-asg" {
-  type        = number
-  description = "defines the max_size for bastion asg instances"
-}
-
-variable "min_size_bastion-asg" {
-  type        = number
-  description = "defines the min_size for bastion asg instances"
-}
-
-variable "capacity_bastion-asg" {
-  type        = number
-  description = "defines the desired capacity for bastion asg instances"
-}
-
-variable "health_grace_period_bastion-asg" {
-  type        = number
-  description = "defines the health_check_grace_period for bastion asg instances"
-}
-
-variable "max_size_wordpress-asg" {
-  type        = number
-  description = "defines the max_size for wordpress asg instances"
-}
-
-variable "min_size_wordpress-asg" {
-  type        = number
-  description = "defines the min_size for wordpress asg instances"
-}
-
-variable "capacity_wordpress-asg" {
-  type        = number
-  description = "defines the desired capacity for wordpress asg instances"
-}
-
-variable "health_grace_period_wordpress-asg" {
-  type        = number
-  description = "defines the health_check_grace_period for wordpress asg instances"
-}
-
-variable "max_size_tooling-asg" {
-  type        = number
-  description = "defines the max_size for tooling asg instances"
-}
-
-variable "min_size_tooling-asg" {
-  type        = number
-  description = "defines the min_size for tooling asg instances"
-}
-
-variable "capacity_tooling-asg" {
-  type        = number
-  description = "defines the desired capacity for tooling asg instances"
-}
-
-variable "health_grace_period_tooling-asg" {
-  type        = number
-  description = "defines the health_check_grace_period for tooling asg instances"
-}
 
 
 

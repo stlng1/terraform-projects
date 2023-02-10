@@ -17,5 +17,12 @@ variable "region" {
 }
 
 
+variable "db_name" {
+  type        = string
+  description = "the name of the database"
+}
 
+variable "data_private_subnets" {
+  type = list(any)
+}
 

@@ -2,7 +2,7 @@
 
 # Create the certificate using a wildcard for all the domains created in root domain name
 resource "aws_acm_certificate" "root_domain_certificate" {
-  domain_name       = "var.domain_certificate"
+  domain_name       = "*.${var.root_domain_name}"
   validation_method = "DNS"
 }
 

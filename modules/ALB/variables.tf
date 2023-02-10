@@ -13,6 +13,12 @@ variable "domain_certificate" {
     description = "name of certificate using wildcard for all the domains created in root domain name"
 }
 
+variable "name" {
+  type    = string
+  default = "ACS"
+
+}
+
 variable "tags" {
   description = "A mapping of tags to assign to all resources."
   type        = map(string)

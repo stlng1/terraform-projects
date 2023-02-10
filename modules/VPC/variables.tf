@@ -39,3 +39,25 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+
+
+
+
+
+variable "preferred_number_of_public_subnets" {
+  type = number
+}
+
+variable "preferred_number_of_private_subnets" {
+  type = number
+}
+
+variable "name" {
+  type    = string
+  default = "ACS"
+
+}
+variable "environment" {
+  default = "true"
+}

@@ -1,33 +1,10 @@
-#### creating sns topic for all the auto scaling groups
-resource "aws_sns_topic" "manager-sns" {
-  name = "Default_CloudWatch_Alarms_Topic"
-}
-
-#creating notification for all the auto scaling groups
-resource "aws_autoscaling_notification" "manager_notifications" {
-  group_names = [
-    aws_autoscaling_group.bastionASG.name,
-    aws_autoscaling_group.nginxASG.name,
-    aws_autoscaling_group.wordpressASG.name,
-    aws_autoscaling_group.toolingASG.name,
-  ]
-  notifications = [
-    "autoscaling:EC2_INSTANCE_LAUNCH",
-    "autoscaling:EC2_INSTANCE_TERMINATE",
-    "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
-    "autoscaling:EC2_INSTANCE_TERMINATE_ERROR",
-  ]
-
-  topic_arn = aws_sns_topic.manager-sns.arn
-}
-
 #launch template for bastion
 resource "random_shuffle" "az_list" {
   input = data.aws_availability_zones.available.names
 }
 
 resource "aws_launch_template" "bastion-launch-template" {
-  image_id               = "var.ami"
+  image_id               = var.ami["ami_base"]
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
 
@@ -35,7 +12,7 @@ resource "aws_launch_template" "bastion-launch-template" {
     name = aws_iam_instance_profile.ip.id
   }
 
-  key_name = "var.keypair"
+  key_name = var.keypair
 
   placement {
     availability_zone = "random_shuffle.az_list.result"
@@ -63,11 +40,11 @@ resource "aws_launch_template" "bastion-launch-template" {
 
 resource "aws_autoscaling_group" "bastionASG" {
   name                      = "bastionASG"
-  max_size                  = var.max_size_bastion-asg
-  min_size                  = var.min_size_bastion-asg
-  health_check_grace_period = var.health_grace_period_bastion-asg
+  max_size                  = var.max_size_asg["bastion"]
+  min_size                  = var.min_size_asg["bastion"]
+  health_check_grace_period = var.health_grace_period_asg["bastion"]
   health_check_type         = "ELB"
-  desired_capacity          = var.capacity_bastion-asg
+  desired_capacity          = var.capacity_asg["bastion"]
 
   vpc_zone_identifier = [
     aws_subnet.PublicSubnet[0].id,
@@ -89,7 +66,7 @@ resource "aws_autoscaling_group" "bastionASG" {
 # launch template for nginx
 
 resource "aws_launch_template" "nginx-launch-template" {
-  image_id               = "var.ami"
+  image_id               = var.ami["ami_base"]
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.nginx-sg.id]
 
@@ -97,7 +74,7 @@ resource "aws_launch_template" "nginx-launch-template" {
     name = aws_iam_instance_profile.ip.id
   }
 
-  key_name = "var.keypair"
+  key_name = var.keypair
 
   placement {
     availability_zone = "random_shuffle.az_list.result"
@@ -125,11 +102,11 @@ resource "aws_launch_template" "nginx-launch-template" {
 
 resource "aws_autoscaling_group" "nginxASG" {
   name                      = "nginxASG"
-  max_size                  = var.max_size_nginx-asg
-  min_size                  = var.min_size_nginx-asg
-  health_check_grace_period = var.health_grace_period_nginx-asg
+  max_size                  = var.max_size_asg["nginx"]
+  min_size                  = var.min_size_asg["nginx"]
+  health_check_grace_period = var.health_grace_period_asg["nginx"]
   health_check_type         = "ELB"
-  desired_capacity          = var.capacity_nginx-asg
+  desired_capacity          = var.capacity_asg["nginx"]
 
   vpc_zone_identifier = [
     aws_subnet.PublicSubnet[0].id,

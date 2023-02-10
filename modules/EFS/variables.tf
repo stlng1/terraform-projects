@@ -11,7 +11,6 @@ variable "tags" {
 
 variable "user_arn" {
   type = string
-  default = {}
 }
 
 variable "access_point" {

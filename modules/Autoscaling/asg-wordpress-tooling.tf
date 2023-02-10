@@ -1,7 +1,7 @@
 # launch template for wordpress
 
 resource "aws_launch_template" "wordpress-launch-template" {
-  image_id               = "var.ami"
+  image_id               = var.ami["ami_webservers"]
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.webserver-sg.id]
 
@@ -9,7 +9,7 @@ resource "aws_launch_template" "wordpress-launch-template" {
     name = aws_iam_instance_profile.ip.id
   }
 
-  key_name = "var.keypair"
+  key_name = var.keypair
 
   placement {
     availability_zone = "random_shuffle.az_list.result"
@@ -38,11 +38,11 @@ resource "aws_launch_template" "wordpress-launch-template" {
 
 resource "aws_autoscaling_group" "wordpressASG" {
   name                      = "wordpressASG"
-  max_size                  = var.max_size_wordpress-asg
-  min_size                  = var.min_size_wordpress-asg
-  health_check_grace_period = var.health_grace_period_wordpress-asg
+  max_size                  = var.max_size_asg["wordpress"]
+  min_size                  = var.min_size_asg["wordpress"]
+  health_check_grace_period = var.health_grace_period_asg["wordpress"]
   health_check_type         = "ELB"
-  desired_capacity          = var.capacity_wordpress-asg
+  desired_capacity          = var.capacity_asg["wordpress"]
   vpc_zone_identifier = [
 
     aws_subnet.Compute_PrivateSubnet[0].id,
@@ -68,7 +68,7 @@ resource "aws_autoscaling_attachment" "asg_attachment_wordpress" {
 
 # launch template for tooling
 resource "aws_launch_template" "tooling-launch-template" {
-  image_id               = "var.ami"
+  image_id               = var.ami["ami_webservers"]
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.webserver-sg.id]
 
@@ -76,7 +76,7 @@ resource "aws_launch_template" "tooling-launch-template" {
     name = aws_iam_instance_profile.ip.id
   }
 
-  key_name = "var.keypair"
+  key_name = var.keypair
 
   placement {
     availability_zone = "random_shuffle.az_list.result"
@@ -105,11 +105,11 @@ resource "aws_launch_template" "tooling-launch-template" {
 
 resource "aws_autoscaling_group" "toolingASG" {
   name                      = "toolingASG"
-  max_size                  = var.max_size_tooling-asg
-  min_size                  = var.min_size_tooling-asg
-  health_check_grace_period = var.health_grace_period_tooling-asg
+  max_size                  = var.max_size_asg["tooling"]
+  min_size                  = var.min_size_asg["tooling"]
+  health_check_grace_period = var.health_grace_period_asg["tooling"]
   health_check_type         = "ELB"
-  desired_capacity          = var.capacity_tooling-asg
+  desired_capacity          = var.capacity_asg["tooling"]
 
   vpc_zone_identifier = [
 

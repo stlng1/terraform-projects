@@ -7,14 +7,14 @@ resource "aws_lb" "publicALB" {
   ]
 
   subnets = [
-    aws_subnet.PublicSubnet[0].id,
-    aws_subnet.PublicSubnet[1].id
+    aws_subnet.PublicSubnet[*].id,
+    # aws_subnet.PublicSubnet[1].id
   ]
 
   tags = merge(
     var.tags,
     {
-      Name = "ACS-publicALB"
+      Name = format("%s-publicALB", var.name)
     },
   )
 
@@ -40,7 +40,7 @@ resource "aws_lb_target_group" "nginxTG" {
 }
 
 #create a Listner for this target Group
-resource "aws_lb_listener" "nginx-listner" {
+resource "aws_lb_listener" "nginx-listener" {
   load_balancer_arn = aws_lb.publicALB.arn
   port              = 443
   protocol          = "HTTPS"
@@ -64,8 +64,8 @@ resource "aws_lb" "privateALB" {
   ]
 
   subnets = [
-    aws_subnet.Compute_PrivateSubnet[0].id,
-    aws_subnet.Compute_PrivateSubnet[1].id
+    aws_subnet.Compute_PrivateSubnet[*].id,
+    # aws_subnet.Compute_PrivateSubnet[1].id
   ]
 
   tags = merge(
@@ -144,7 +144,7 @@ resource "aws_lb_listener_rule" "tooling-listener" {
 
   condition {
     host_header {
-      values = "domain_subnets[1]"
+      values = domain_subnets[1]
     }
   }
 }

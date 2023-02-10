@@ -19,7 +19,7 @@ locals {
       description = "nginx security group"
     }
 
-    # security group for IALB
+    # security group for internal alb
     privateALB-sg = {
       name        = "privateALB-sg"
       description = "private-alb security group"
@@ -37,8 +37,12 @@ locals {
     datalayer-sg = {
       name        = "datalayer-sg"
       description = "data layer security group"
+    }
 
-
+    # security group for compute service group (jenkins, sonar, artifact)
+    ACS-sg = {
+      name        = "ACS-sg"
+      description = "compute service security group"
     }
   }
 }
