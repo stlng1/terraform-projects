@@ -1,3 +1,3 @@
 locals {
-  sub_domains = ["var.domain_subnet[0]", "var.domain_subnet[1]"]
+  sub_domains = "${var.domain_subnets}"
 }

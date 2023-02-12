@@ -40,7 +40,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "public_subnets" {
-  description = "list of public subnets."
-  type = list(any)
-}
+# variable "public_subnets" {
+#   description = "list of public subnets."
+#   type = list(any)
+# }

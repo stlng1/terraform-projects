@@ -1,11 +1,16 @@
+# Get list of availability zones
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 #launch template for bastion
 resource "random_shuffle" "az_list" {
   input = data.aws_availability_zones.available.names
 }
 
 resource "aws_launch_template" "bastion-launch-template" {
-  image_id               = var.ami["ami_base"]
-  instance_type          = "t2.micro"
+ image_id                = var.ami["ami_base"]
+  instance_type          = var.instance_type-btn
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
 
   iam_instance_profile {
@@ -28,7 +33,7 @@ resource "aws_launch_template" "bastion-launch-template" {
     tags = merge(
       var.tags,
       {
-        Name = "bastion-launch-template"
+        Name = "${var.project_phase_name}-bastion-launch-template"
       },
     )
   }
@@ -39,9 +44,9 @@ resource "aws_launch_template" "bastion-launch-template" {
 # ---- Autoscaling for bastion  hosts
 
 resource "aws_autoscaling_group" "bastionASG" {
-  name                      = "bastionASG"
-  max_size                  = var.max_size_asg["bastion"]
-  min_size                  = var.min_size_asg["bastion"]
+  name                      = "${var.project_phase_name}-bastionASG"
+  max_size                  = var.max_size_btn
+  min_size                  = var.min_size_btn
   health_check_grace_period = var.health_grace_period_asg["bastion"]
   health_check_type         = "ELB"
   desired_capacity          = var.capacity_asg["bastion"]
@@ -55,19 +60,21 @@ resource "aws_autoscaling_group" "bastionASG" {
     id      = aws_launch_template.bastion-launch-template.id
     version = "$Latest"
   }
-  tag {
-    key                 = "Name"
-    value               = "bastionASG-launch-template"
+ 
+  tags = merge(
+  var.tags, {
+    Name = "${var.project_phase_name}-bastionASG-instance-launch"
     propagate_at_launch = true
   }
-
+  )
 }
+
 
 # launch template for nginx
 
 resource "aws_launch_template" "nginx-launch-template" {
   image_id               = var.ami["ami_base"]
-  instance_type          = "t2.micro"
+  instance_type          = var.instance_type-ngx
   vpc_security_group_ids = [aws_security_group.nginx-sg.id]
 
   iam_instance_profile {
@@ -102,8 +109,8 @@ resource "aws_launch_template" "nginx-launch-template" {
 
 resource "aws_autoscaling_group" "nginxASG" {
   name                      = "nginxASG"
-  max_size                  = var.max_size_asg["nginx"]
-  min_size                  = var.min_size_asg["nginx"]
+  max_size                  = var.max_size_ngx
+  min_size                  = var.min_size_ngx
   health_check_grace_period = var.health_grace_period_asg["nginx"]
   health_check_type         = "ELB"
   desired_capacity          = var.capacity_asg["nginx"]
@@ -118,11 +125,12 @@ resource "aws_autoscaling_group" "nginxASG" {
     version = "$Latest"
   }
 
-  tag {
-    key                 = "Name"
-    value               = "nginxASG-launch-template"
+  tags = merge(
+  var.tags, {
+    Name = "${var.project_phase_name}-nginxASG-instance-launch"
     propagate_at_launch = true
   }
+  )
 
 }
 

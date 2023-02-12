@@ -1,6 +1,6 @@
 #create an ALB to balance incoming internet traffic between the Instances
 resource "aws_lb" "publicALB" {
-  name     = "publicALB"
+  name     = "${var.project_phase_name}-publicALB"
   internal = false
   security_groups = [
     aws_security_group.publicALB-sg.id,
@@ -14,7 +14,7 @@ resource "aws_lb" "publicALB" {
   tags = merge(
     var.tags,
     {
-      Name = format("%s-publicALB", var.name)
+      Name = format("%s-publicALB", var.project_phase_name)
     },
   )
 
@@ -57,7 +57,7 @@ resource "aws_lb_listener" "nginx-listener" {
 #---------------------------------
 
 resource "aws_lb" "privateALB" {
-  name     = "privateALB"
+  name     = "${var.project_phase_name}-privateALB"
   internal = true
   security_groups = [
     aws_security_group.privateALB-sg.id,
@@ -71,7 +71,7 @@ resource "aws_lb" "privateALB" {
   tags = merge(
     var.tags,
     {
-      Name = "ACS-privateALB"
+      Name = format("%s-privateALB", var.project_phase_name)
     },
   )
 

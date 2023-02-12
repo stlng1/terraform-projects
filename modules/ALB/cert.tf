@@ -36,7 +36,7 @@ resource "aws_acm_certificate_validation" "root_domain_validation" {
   validation_record_fqdns = [for record in aws_route53_record.root_domain_record : record.fqdn]
 }
 
-# create records for sub domains
+# create records for sub domains - tooling and wordpress
 resource "aws_route53_record" "sub_domain" {
   for_each    = local.sub_domains
   name        = each.value.name
@@ -50,3 +50,30 @@ resource "aws_route53_record" "sub_domain" {
   }
 }
 
+
+#  create records for tooling
+# resource "aws_route53_record" "tooling" {
+#   zone_id = data.aws_route53_zone.oyindamola.zone_id
+#   name    = "tooling.oyindamola.gq"
+#   type    = "A"
+
+#   alias {
+#     name                   = aws_lb.ext-alb.dns_name
+#     zone_id                = aws_lb.ext-alb.zone_id
+#     evaluate_target_health = true
+#   }
+# }
+
+
+# # create records for wordpress
+# resource "aws_route53_record" "wordpress" {
+#   zone_id = data.aws_route53_zone.oyindamola.zone_id
+#   name    = "wordpress.oyindamola.gq"
+#   type    = "A"
+
+#   alias {
+#     name                   = aws_lb.ext-alb.dns_name
+#     zone_id                = aws_lb.ext-alb.zone_id
+#     evaluate_target_health = true
+#   }
+# }
