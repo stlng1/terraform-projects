@@ -11,11 +11,12 @@ public_subnets                 = ["10.0.1.0/24", "10.0.2.0/24"]
 compute_private_subnets        = ["10.0.3.0/24", "10.0.4.0/24"]
 data_private_subnets           = ["10.0.5.0/24", "10.0.6.0/24"]
 root_domain_name               = "orieja.com.ng"
-domain_subnets                 = ["wordpress.orieja.com.ng", "tooling.orieja.com.ng"]
+domain_subnet_1                = "wordpress.orieja.com.ng"
+domain_subnet_2                = "tooling.orieja.com.ng"
 # my_s3_bucket                   = "femmy-dev-terraform-bucket"
 environment                    = "production"
 ami = {
-  ami_base       = "ami-0b0af3577fe5e3532"
+  ami_base       = "ami-0b0af3577fe5e3532",
   ami_webservers = "ami-0b0af3577fe5e3532"
 }
 # account_no      = "940373101182"
@@ -58,3 +59,16 @@ capacity_asg = {
   tooling   = 1
   wordpress = 1
 }
+
+  # instance_type-btn               = "t2.micro"
+  # min_size_btn                    = 2
+  # max_size_btn                    = 2
+  # instance_type-ngx               = "t2.micro"
+  # min_size_ngx                    = 2
+  # max_size_ngx                    = 2
+  # instance_type-wps               = "t2.micro"
+  # min_size_wps                    = 2
+  # max_size_wps                    = 2 
+  # instance_type-tlg               = "t2.micro"
+  # min_size_tlg                    = 2
+  # max_size_tlg                    = 2

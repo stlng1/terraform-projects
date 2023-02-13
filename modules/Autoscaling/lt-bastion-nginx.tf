@@ -1,13 +1,11 @@
-
-# launch template for bastion
-
+#launch template for bastion
 resource "aws_launch_template" "bastion-launch-template" {
-  image_id               = var.ami-bastion
-  instance_type          = "t2.micro"
-  vpc_security_group_ids = aws_security_group.ACS["bastion-sg"].id  #var.bastion-sg
+ image_id                = var.ami["ami_base"]
+  instance_type          = var.instance_type-btn
+  vpc_security_group_ids = [module.security.bastion-sg.id]
 
   iam_instance_profile {
-    name = var.instance_profile
+    name = aws_iam_instance_profile.ip.id
   }
 
   key_name = var.keypair
@@ -23,14 +21,12 @@ resource "aws_launch_template" "bastion-launch-template" {
   tag_specifications {
     resource_type = "instance"
 
-
-  tags = merge(
-    var.tags,
-    {
-      Name = "bastion-launch-template"
-    },
-  )
-    
+    tags = merge(
+      var.tags,
+      {
+        Name = "${var.project_phase_name}-bastion-launch-template"
+      },
+    )
   }
 
   user_data = filebase64("${path.module}/bastion.sh")
@@ -40,12 +36,12 @@ resource "aws_launch_template" "bastion-launch-template" {
 # launch template for nginx
 
 resource "aws_launch_template" "nginx-launch-template" {
-  image_id               = var.ami-nginx
-  instance_type          = "t2.micro"
-  vpc_security_group_ids = aws_security_group.ACS["nginx-sg"].id #var.nginx-sg
+  image_id               = var.ami["ami_base"]
+  instance_type          = var.instance_type-ngx
+  vpc_security_group_ids = [module.security.nginx-sg.id]
 
   iam_instance_profile {
-    name = var.instance_profile
+    name = aws_iam_instance_profile.ip.id
   }
 
   key_name = var.keypair
@@ -61,12 +57,12 @@ resource "aws_launch_template" "nginx-launch-template" {
   tag_specifications {
     resource_type = "instance"
 
-  tags = merge(
-    var.tags,
-    {
-      Name = "nginx-launch-template"
-    },
-  )
+    tags = merge(
+      var.tags,
+      {
+        Name = "nginx-launch-template"
+      },
+    )
   }
 
   user_data = filebase64("${path.module}/nginx.sh")

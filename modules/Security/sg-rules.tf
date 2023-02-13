@@ -111,3 +111,40 @@ resource "aws_security_group_rule" "webserver_rds_mysql" {
     source_security_group_id = aws_security_group.ACS["webserver-sg"].id
     security_group_id        = aws_security_group.ACS["datalayer-sg"].id
 }
+
+# security group for ACS, to allow access from anywhere for HTTP traffic
+resource "aws_security_group_rule" "inbound_public_jenkins_http" {
+    type                    = "ingress"
+    from_port               = 8080
+    to_port                 = 8080
+    protocol                = "tcp"
+    cidr_blocks             = ["0.0.0.0/0"]
+    security_group_id       = aws_security_group.ACS["ACS-sg"].id
+}
+
+resource "aws_security_group_rule" "inbound_public-artifactory_http" {
+    type                    = "ingress"
+    from_port               = 8081
+    to_port                 = 8081
+    protocol                = "tcp"
+    cidr_blocks             = ["0.0.0.0/0"]
+    security_group_id       = aws_security_group.ACS["ACS-sg"].id
+}
+
+resource "aws_security_group_rule" "inbound_public-sonar_http" {
+    type                    = "ingress"
+    from_port               = 9000
+    to_port                 = 9000
+    protocol                = "tcp"
+    cidr_blocks             = ["0.0.0.0/0"]
+    security_group_id       = aws_security_group.ACS["ACS-sg"].id
+}
+
+resource "aws_security_group_rule" "bastion_acs_ssh" {
+    type                     = "ingress"
+    from_port                = 22
+    to_port                  = 22
+    protocol                 = "tcp"
+    source_security_group_id = aws_security_group.ACS["bastion-sg"].id
+    security_group_id        = aws_security_group.ACS["ACS-sg"].id
+}

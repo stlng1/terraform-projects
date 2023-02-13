@@ -3,12 +3,12 @@ resource "aws_lb" "publicALB" {
   name     = "${var.project_phase_name}-publicALB"
   internal = false
   security_groups = [
-    aws_security_group.publicALB-sg.id,
+    var.publicALB-sg,
   ]
 
   subnets = [
-    aws_subnet.PublicSubnet[*].id,
-    # aws_subnet.PublicSubnet[1].id
+    var.public_sbn-1,
+    var.public_sbn-2
   ]
 
   tags = merge(
@@ -36,7 +36,7 @@ resource "aws_lb_target_group" "nginxTG" {
   port        = 443
   protocol    = "HTTPS"
   target_type = "instance"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.vpc_id
 }
 
 #create a Listner for this target Group
@@ -60,12 +60,12 @@ resource "aws_lb" "privateALB" {
   name     = "${var.project_phase_name}-privateALB"
   internal = true
   security_groups = [
-    aws_security_group.privateALB-sg.id,
+    var.privateALB-sg,
   ]
 
   subnets = [
-    aws_subnet.Compute_PrivateSubnet[*].id,
-    # aws_subnet.Compute_PrivateSubnet[1].id
+    var.compute_private_sbn-1,
+    var.compute_private_sbn-2
   ]
 
   tags = merge(
@@ -95,7 +95,7 @@ resource "aws_lb_target_group" "wordpressTG" {
   port        = 443
   protocol    = "HTTPS"
   target_type = "instance"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.vpc_id
 }
 
 # --- target group for tooling -------
@@ -114,7 +114,7 @@ resource "aws_lb_target_group" "toolingTG" {
   port        = 443
   protocol    = "HTTPS"
   target_type = "instance"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.vpc_id
 }
 
 # For this aspect a single listener was created for the wordpress which is default,
@@ -144,7 +144,7 @@ resource "aws_lb_listener_rule" "tooling-listener" {
 
   condition {
     host_header {
-      values = domain_subnets[1]
+      values = ["var.domain_subnet_2"]
     }
   }
 }

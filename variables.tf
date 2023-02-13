@@ -19,6 +19,11 @@ variable "region" {
   type = string
 }
 
+# variable "ami" {
+#   type        = map
+#   description = "AMI image_ids for the launch templates"
+#   default = {}
+# }
 
 variable "db_name" {
   type        = string
@@ -29,11 +34,11 @@ variable "db_name" {
 #   type = list(any)
 # }
 
-variable "ami" {
-  type        = map(any)
-  description = "AMI image_ids for the launch templates"
-  default     = {}
-}
+# variable "ami" {
+#   type        = map(any)
+#   description = "AMI image_ids for the launch templates"
+#   default     = {}
+# }
 
 # variable "ami-webservers" {
 #   type        = string
@@ -45,11 +50,11 @@ variable "keypair" {
   description = "key pair for the instances"
 }
 
-variable "tags" {
-  description = "A mapping of tags to assign to all resources."
-  type        = map(string)
-  default     = {}
-}
+# variable "tags" {
+#   description = "A mapping of tags to assign to all resources."
+#   type        = map(string)
+#   default     = {}
+# }
 
 variable "max_size_asg" {
   description = "A mapping of he max_size for asg instances."
@@ -75,8 +80,13 @@ variable "health_grace_period_asg" {
   default     = {}
 }
 
-variable "domain_subnets" {
-  type        = list(any)
+variable "domain_subnet_1" {
+  type        = string
+  description = "list of domain subnets"
+}
+
+variable "domain_subnet_2" {
+  type        = string
   description = "list of domain subnets"
 }
 
@@ -106,11 +116,10 @@ variable "name" {
 #   description = "name of the project"
 # }
 
-variable "sg-compute" {
-  description = "security group for compute instances"
-  type        = string
-  default     = "ACS-sg"
-}
+# variable "sg-compute" {
+#   description = "security group for compute instances"
+#   type        = string
+# }
 
 # variable "keypair" {
 #   type        = string

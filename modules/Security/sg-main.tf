@@ -3,7 +3,7 @@ resource "aws_security_group" "ACS" {
   for_each    = local.security_groups
   name        = each.value.name
   description = each.value.description
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.vpc_id
 
  
   egress {

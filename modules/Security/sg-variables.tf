@@ -4,7 +4,11 @@ variable "tags" {
   default     = {}
 }
 
-# variable "vpc_id" {
-#   type        = string
-#   description = "the vpc id"
-# }
+variable "vpc_id" {
+  type        = string
+  description = "the vpc id"
+}
+
+variable "project_name" {
+  type = string
+}

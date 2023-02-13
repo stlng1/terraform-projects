@@ -37,9 +37,8 @@ resource "aws_acm_certificate_validation" "root_domain_validation" {
 }
 
 # create records for sub domains - tooling and wordpress
-resource "aws_route53_record" "sub_domain" {
-  for_each    = local.sub_domains
-  name        = each.value.name
+resource "aws_route53_record" "sub_domain_1" {
+  name    = "var.domain_subnet_1"
   zone_id = data.aws_route53_zone.root_domain_zone.zone_id
   type    = "A"
 
@@ -50,11 +49,22 @@ resource "aws_route53_record" "sub_domain" {
   }
 }
 
+resource "aws_route53_record" "sub_domain_2" {
+  name    = "var.domain_subnet_2"
+  zone_id = data.aws_route53_zone.root_domain_zone.zone_id
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.publicALB.dns_name
+    zone_id                = aws_lb.publicALB.zone_id
+    evaluate_target_health = true
+  }
+}
 
 #  create records for tooling
 # resource "aws_route53_record" "tooling" {
 #   zone_id = data.aws_route53_zone.oyindamola.zone_id
-#   name    = "tooling.oyindamola.gq"
+#   name    = "var.domain_subnet_2"
 #   type    = "A"
 
 #   alias {

@@ -21,13 +21,13 @@ EOF
 # create key alias
 resource "aws_kms_alias" "alias" {
   name          = "alias/kms"
-  target_key_id = aws_kms_key.ACS-kms.key_id
+  target_key_id = aws_kms_key.ACS_kms.key_id
 }
 
 # create Elastic file system
 resource "aws_efs_file_system" "ACS-efs" {
   encrypted  = true
-  kms_key_id = aws_kms_key.ACS-kms.arn
+  kms_key_id = aws_kms_key.ACS_kms.arn
 
   tags = merge(
     var.tags,
@@ -41,14 +41,14 @@ resource "aws_efs_file_system" "ACS-efs" {
 resource "aws_efs_mount_target" "subnet-1" {
   file_system_id  = aws_efs_file_system.ACS-efs.id
   subnet_id       = aws_subnet.Data_PrivateSubnet[0].id
-  security_groups = [aws_security_group.datalayer-sg.id]
+  security_groups = [module.security.datalayer-sg.id]
 }
 
 # set second mount target for the EFS 
 resource "aws_efs_mount_target" "subnet-2" {
   file_system_id  = aws_efs_file_system.ACS-efs.id
   subnet_id       = aws_subnet.Data_PrivateSubnet[1].id
-  security_groups = [aws_security_group.datalayer-sg.id]
+  security_groups = [module.security.datalayer-sg.id]
 }
 
 # create access point for wordpress
