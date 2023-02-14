@@ -1,11 +1,11 @@
 #launch template for bastion
 resource "aws_launch_template" "bastion-launch-template" {
- image_id                = var.ami["ami_base"]
+ image_id                = var.ami_base
   instance_type          = var.instance_type-btn
-  vpc_security_group_ids = [module.security.bastion-sg.id]
+  vpc_security_group_ids = [var.bastion-sg]
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ip.id
+    name = var.instance_profile
   }
 
   key_name = var.keypair
@@ -36,12 +36,12 @@ resource "aws_launch_template" "bastion-launch-template" {
 # launch template for nginx
 
 resource "aws_launch_template" "nginx-launch-template" {
-  image_id               = var.ami["ami_base"]
+  image_id               = var.ami_base
   instance_type          = var.instance_type-ngx
-  vpc_security_group_ids = [module.security.nginx-sg.id]
+  vpc_security_group_ids = [var.nginx-sg]
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ip.id
+    name = var.instance_profile
   }
 
   key_name = var.keypair

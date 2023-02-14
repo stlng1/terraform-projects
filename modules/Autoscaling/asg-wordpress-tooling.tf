@@ -8,8 +8,8 @@ resource "aws_autoscaling_group" "wordpressASG" {
   desired_capacity          = var.capacity_asg["wordpress"]
   vpc_zone_identifier = [
 
-    aws_subnet.Compute_PrivateSubnet[0].id,
-    aws_subnet.Compute_PrivateSubnet[1].id
+    var.compute_private_sbn-1,
+    var.compute_private_sbn-2
   ]
 
   launch_template {
@@ -26,9 +26,8 @@ resource "aws_autoscaling_group" "wordpressASG" {
 # attatching autoscaling group of  wordpress application to internal loadbalancer
 resource "aws_autoscaling_attachment" "asg_attachment_wordpress" {
   autoscaling_group_name = aws_autoscaling_group.wordpressASG.id
-  alb_target_group_arn   = aws_lb_target_group.wordpressTG.arn
+  alb_target_group_arn   = var.wordpress-alb-tgt
 }
-
 
 # ---- Autoscaling for tooling -----
 resource "aws_autoscaling_group" "toolingASG" {
@@ -41,8 +40,8 @@ resource "aws_autoscaling_group" "toolingASG" {
 
   vpc_zone_identifier = [
 
-    aws_subnet.Compute_PrivateSubnet[0].id,
-    aws_subnet.Compute_PrivateSubnet[1].id
+    var.compute_private_sbn-1,
+    var.compute_private_sbn-2
   ]
 
   launch_template {
@@ -60,5 +59,5 @@ resource "aws_autoscaling_group" "toolingASG" {
 # attaching autoscaling group of  tooling application to internal loadbalancer
 resource "aws_autoscaling_attachment" "asg_attachment_tooling" {
   autoscaling_group_name = aws_autoscaling_group.toolingASG.id
-  alb_target_group_arn   = aws_lb_target_group.toolingTG.arn
+  alb_target_group_arn   = var.tooling-alb-tgt
 }

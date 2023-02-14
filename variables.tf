@@ -253,6 +253,14 @@ variable "data_private_subnets" {
 #   default = "true"
 # }
 
+variable "ami_base" {
+  type        = string
+  description = "AMI image_ids for the launch templates"
+}
 
+variable "ami_web" {
+  type        = string
+  description = "AMI image_ids for the launch templates"
+}
 
 

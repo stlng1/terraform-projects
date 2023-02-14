@@ -1,11 +1,11 @@
 # launch template for wordpress
 resource "aws_launch_template" "wordpress-launch-template" {
-  image_id               = var.ami["ami_webservers"]
+  image_id               = var.ami_web
   instance_type          = var.instance_type-wps
-  vpc_security_group_ids = [module.security.web-sg.id]
+  vpc_security_group_ids = [var.web-sg]
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ip.id
+    name = var.instance_profile
   }
 
   key_name = var.keypair
@@ -37,12 +37,12 @@ resource "aws_launch_template" "wordpress-launch-template" {
 
 # launch template for tooling
 resource "aws_launch_template" "tooling-launch-template" {
-  image_id               = var.ami["ami_webservers"]
+  image_id               = var.ami_web
   instance_type          = var.instance_type-tlg
-  vpc_security_group_ids = [module.security.web-sg.id]
+  vpc_security_group_ids = [var.web-sg]
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ip.id
+    name = var.instance_profile
   }
 
   key_name = var.keypair

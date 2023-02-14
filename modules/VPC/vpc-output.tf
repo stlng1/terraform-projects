@@ -40,3 +40,9 @@ output "vpc_id" {
 output "instance_profile" {
   value = aws_iam_instance_profile.ip.id
 }
+
+output "list_of_az" {
+  value       = data.aws_availability_zones.available[*].names
+  description = "list of available availability zones"
+}
+  

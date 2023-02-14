@@ -1,15 +1,25 @@
 # The entire section create a certiface, public zone, and validate the certificate using DNS method
 
-# Create the certificate using a wildcard for all the domains created in root domain name
-resource "aws_acm_certificate" "root_domain_certificate" {
-  domain_name       = "*.${var.root_domain_name}"
-  validation_method = "DNS"
+#create the hosted zone
+data "aws_route53_zone" "root_domain_zone" {
+  #name         = "var.root_domain_name"
+  zone_id =  "Z072187119W7CIDUBH84P"
+  private_zone = false
 }
 
-# calling the hosted zone
-data "aws_route53_zone" "root_domain_zone" {
-  name         = "var.root_domain_name"
-  private_zone = false
+#request certificate using a wildcard for all the domains created in root domain name
+resource "aws_acm_certificate" "root_domain_certificate" {
+  domain_name               = "*.${var.root_domain_name}"
+  #subject_alternative_names = ["*.{var.root_domain_name}"]
+  validation_method         = "DNS"
+
+  tags = {
+    Name : var.root_domain_name
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # selecting validation method

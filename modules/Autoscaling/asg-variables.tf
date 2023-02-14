@@ -1,7 +1,11 @@
-variable "ami" {
-  type        = map
+variable "ami_base" {
+  type        = string
   description = "AMI image_ids for the launch templates"
-  default = {}
+}
+
+variable "ami_web" {
+  type        = string
+  description = "AMI image_ids for the launch templates"
 }
 
 variable "project_phase_name" {
@@ -16,6 +20,18 @@ variable "keypair" {
 
 variable "tags" {
   description = "A mapping of tags to assign to all resources."
+  type        = map(string)
+  default     = {}
+}
+
+variable "health_grace_period_asg" {
+  description = "A mapping of the health_check_grace_period for asg instances."
+  type        = map(string)
+  default     = {}
+}
+
+variable "capacity_asg" {
+  description = "A mapping of the desired capacity for asg instances."
   type        = map(string)
   default     = {}
 }
@@ -78,4 +94,65 @@ variable "instance_type-wps" {
 variable "instance_type-tlg" {
   description = "the processing capacity of a tooling instance."
   type        = string
+}
+
+variable "bastion-sg" {
+  description = "bastion security group"
+  type        = string
+}
+
+variable "nginx-sg" {
+  description = "nginx security group"
+  type        = string
+}
+
+variable "web-sg" {
+  description = "webservers security group"
+  type        = string
+}
+
+variable "instance_profile" {
+  description = "IAM instance profile"
+  type        = string
+}
+
+variable "list_of_az" {
+  description = "available availability zones"
+  type        = map(string)
+  default     = {}
+}
+
+variable "public_sbn-1" {
+  type        = string
+  description = "public subnets"
+}
+
+variable "public_sbn-2" {
+  type        = string
+  description = "public subnets"
+}
+
+variable "compute_private_sbn-1" {
+  type        = string
+  description = "compute private subnets"
+}
+
+variable "compute_private_sbn-2" {
+  type        = string
+  description = "compute private subnets"
+}
+
+variable "nginx-alb-tgt" {
+  type        = string
+  description = "nginx reverse proxy target group"
+}
+
+variable "wordpress-alb-tgt" {
+  type        = string
+  description = "wordpress target group"
+}
+
+variable "tooling-alb-tgt" {
+  type        = string
+  description = "tooling target group"
 }

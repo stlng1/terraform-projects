@@ -15,10 +15,8 @@ domain_subnet_1                = "wordpress.orieja.com.ng"
 domain_subnet_2                = "tooling.orieja.com.ng"
 # my_s3_bucket                   = "femmy-dev-terraform-bucket"
 environment                    = "production"
-ami = {
-  ami_base       = "ami-0b0af3577fe5e3532",
-  ami_webservers = "ami-0b0af3577fe5e3532"
-}
+  ami_base        = "ami-08284eb384608e0ef"
+  ami_web         = "ami-08677f0324bb83377"
 # account_no      = "940373101182"
 master-username = "admin"
 master-password = "PassWord"

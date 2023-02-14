@@ -1,10 +1,10 @@
-# Get list of availability zones
-# data "aws_availability_zones" "available" {
-#   state = "available"
-# }
+#Get list of availability zones
+data "aws_availability_zones" "available" {
+  state = "available"
+}
 
 resource "random_shuffle" "az_list" {
-  input = data.aws_availability_zones.available.names
+  input = [data.aws_availability_zones.available.names]
 }
 
 # ---- Autoscaling for bastion  hosts
@@ -17,8 +17,8 @@ resource "aws_autoscaling_group" "bastionASG" {
   desired_capacity          = var.capacity_asg["bastion"]
 
   vpc_zone_identifier = [
-    aws_subnet.PublicSubnet[0].id,
-    aws_subnet.PublicSubnet[1].id
+    var.public_sbn-1,
+    var.public_sbn-2
   ]
 
   launch_template {
@@ -45,8 +45,8 @@ resource "aws_autoscaling_group" "nginxASG" {
   desired_capacity          = var.capacity_asg["nginx"]
 
   vpc_zone_identifier = [
-    aws_subnet.PublicSubnet[0].id,
-    aws_subnet.PublicSubnet[1].id
+    var.public_sbn-1,
+    var.public_sbn-2
   ]
 
   launch_template {
@@ -65,5 +65,5 @@ resource "aws_autoscaling_group" "nginxASG" {
 # attaching autoscaling group of nginx to external load balancer
 resource "aws_autoscaling_attachment" "asg_attachment_nginx" {
   autoscaling_group_name = aws_autoscaling_group.nginxASG.id
-  alb_target_group_arn   = aws_lb_target_group.nginxTG.arn
+  alb_target_group_arn   = var.nginx-alb-tgt
 }

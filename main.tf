@@ -44,38 +44,40 @@ module "security" {
   project_name  = "orieja"
 }
 
+module "AutoScaling" {
+  source                          = "./modules/Autoscaling"
+  ami_base        = "ami-08284eb384608e0ef"
+  ami_web         = "ami-08677f0324bb83377"
+  instance_type-btn               = "t2.micro"
+  min_size_btn                    = 2
+  max_size_btn                    = 2
+  instance_type-ngx               = "t2.micro"
+  min_size_ngx                    = 2
+  max_size_ngx                    = 2
+  instance_type-wps               = "t2.micro"
+  min_size_wps                    = 2
+  max_size_wps                    = 2 
+  instance_type-tlg               = "t2.micro"
+  min_size_tlg                    = 2
+  max_size_tlg                    = 2
 
-
-# module "AutoScaling" {
-#   source                      = "./modules/Autoscaling"
-#   instance_type-btn               = "t2.micro"
-#   min_size_btn                    = 2
-#   max_size_btn                    = 2
-#   instance_type-ngx               = "t2.micro"
-#   min_size_ngx                    = 2
-#   max_size_ngx                    = 2
-#   instance_type-wps               = "t2.micro"
-#   min_size_wps                    = 2
-#   max_size_wps                    = 2 
-#   instance_type-tlg               = "t2.micro"
-#   min_size_tlg                    = 2
-#   max_size_tlg                    = 2
-
-#   # health_check_grace_period = var.health_grace_period_asg
-#   # sg-web                    = module.security.webserver-sg
-#   #bastion-sg      = module.security.bastion-sg
-#   # sg-nginx                  = module.security.nginx-sg
-#   # wordpress-alb-tgt         = module.ALB.wordpressTG
-#   # nginx-alb-tgt             = module.ALB.nginxTG
-#   # tooling-alb-tgt           = module.ALB.toolingTG
-#   # instance_profile          = module.VPC.instance_profile
-#   # public_subnets            = module.VPC.PublicSubnet-[*]
-#   # private_subnets           = module.VPC.Compute_PrivateSubnet-[*]
-#   #instance_name                      = module.VPC.ip
-#   project_phase_name        = var.project_phase_name
-#   keypair                   = var.keypair
-
-# }
+#health_check_grace_period = var.health_grace_period_asg
+  web-sg                          = module.security.web-sg
+  bastion-sg                      = module.security.bastion-sg
+  nginx-sg                        = module.security.nginx-sg
+  wordpress-alb-tgt               = module.ALB.wordpress-TG
+  nginx-alb-tgt                   = module.ALB.nginx-TG
+  tooling-alb-tgt                 = module.ALB.tooling-TG
+  # instance_profile          = module.VPC.instance_profile
+  public_sbn-1                    = module.VPC.public_subnets-1
+  public_sbn-2                    = module.VPC.public_subnets-2
+  compute_private_sbn-1           = module.VPC.compute_private_subnets-1
+  compute_private_sbn-2           = module.VPC.compute_private_subnets-2
+  instance_profile                = module.VPC.instance_profile
+  project_phase_name              = var.project_phase_name
+  keypair                         = var.keypair
+  list_of_az                      = module.VPC.list_of_az
+}
 
 # # Module for Elastic Filesystem; this module will create elastic file system in the webservers availablity
 # # zone and allow traffic from the webservers
