@@ -116,12 +116,6 @@ variable "instance_profile" {
   type        = string
 }
 
-# variable "list_of_az" {
-#   description = "available availability zones"
-#   type        = map(string)
-#   default     = {}
-# }
-
 variable "public_subnets-1" {
   type        = string
   description = "public subnets"

@@ -2,7 +2,6 @@
 
 #create the hosted zone
 data "aws_route53_zone" "root_domain_zone" {
-  #name         = "var.root_domain_name"
   zone_id =  "Z072187119W7CIDUBH84P"
   private_zone = false
 }
@@ -10,7 +9,6 @@ data "aws_route53_zone" "root_domain_zone" {
 #request certificate using a wildcard for all the domains created in root domain name
 resource "aws_acm_certificate" "root_domain_certificate" {
   domain_name               = "*.${var.root_domain_name}"
-  #subject_alternative_names = ["*.{var.root_domain_name}"]
   validation_method         = "DNS"
 
   tags = {
@@ -71,29 +69,3 @@ resource "aws_route53_record" "sub_domain_2" {
   }
 }
 
-#  create records for tooling
-# resource "aws_route53_record" "tooling" {
-#   zone_id = data.aws_route53_zone.oyindamola.zone_id
-#   name    = "var.domain_subnet_2"
-#   type    = "A"
-
-#   alias {
-#     name                   = aws_lb.ext-alb.dns_name
-#     zone_id                = aws_lb.ext-alb.zone_id
-#     evaluate_target_health = true
-#   }
-# }
-
-
-# # create records for wordpress
-# resource "aws_route53_record" "wordpress" {
-#   zone_id = data.aws_route53_zone.oyindamola.zone_id
-#   name    = "wordpress.oyindamola.gq"
-#   type    = "A"
-
-#   alias {
-#     name                   = aws_lb.ext-alb.dns_name
-#     zone_id                = aws_lb.ext-alb.zone_id
-#     evaluate_target_health = true
-#   }
-# }

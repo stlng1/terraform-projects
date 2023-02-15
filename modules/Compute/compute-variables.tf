@@ -1,21 +1,7 @@
-# variable "subnets-compute" {
-#     description = "public subnets for compute instances"
-# }
-
 variable "ami_base" {
   type        = string
   description = "AMI image_ids for the launch templates"
 }
-
-# variable "ami-jenkins" {
-#     type = string
-#     description = "ami for jenkins"
-# }
-
-# variable "ami-jfrog" {
-#     type = string
-#     description = "ami for jfrob"
-# }
 
 variable "project_name" {
     type = string
@@ -43,8 +29,3 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
-
-# variable "public_subnets" {
-#   description = "list of public subnets."
-#   type = list(any)
-# }

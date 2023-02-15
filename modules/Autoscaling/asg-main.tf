@@ -8,7 +8,6 @@ resource "random_shuffle" "az_list" {
   result_count = 2
 }
 
-
 #### creating sns topic for all the auto scaling groups
 resource "aws_sns_topic" "manager-sns" {
   name = "Default_CloudWatch_Alarms_Topic"

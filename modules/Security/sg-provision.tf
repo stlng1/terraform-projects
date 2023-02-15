@@ -4,7 +4,6 @@ locals {
     publicALB-sg = {
       name        = "${var.project_name}-publicALB-sg"
       description = "public-alb security group"
-
     }
 
     # security group for bastion
@@ -25,13 +24,11 @@ locals {
       description = "private-alb security group"
     }
 
-
     # security group for webservers
     webserver-sg = {
       name        = "${var.project_name}-webserver-sg"
       description = "webservers security group"
     }
-
 
     # security group for data-layer
     datalayer-sg = {
