@@ -1,7 +1,7 @@
 # This section will create the subnet group for the RDS  instance using the private subnet
 resource "aws_db_subnet_group" "ACS-rds" {
   name       = "acs-rds"
-  subnet_ids = [aws_subnet.Data_PrivateSubnet[0].id, aws_subnet.Data_PrivateSubnet[1].id]
+  subnet_ids = ["var.data_private_subnets-1", "var.data_private_subnets-2"]
 
   tags = merge(
     var.tags,
@@ -24,6 +24,6 @@ resource "aws_db_instance" "ACS-rds" {
   parameter_group_name   = "default.mysql5.7"
   db_subnet_group_name   = aws_db_subnet_group.ACS-rds.name
   skip_final_snapshot    = true
-  vpc_security_group_ids = [module.security.datalayer-sg.id]
+  vpc_security_group_ids = [var.datalayer-sg]
   multi_az               = "true"
 }

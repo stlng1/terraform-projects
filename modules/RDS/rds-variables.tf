@@ -18,3 +18,18 @@ variable "db_name" {
   type        = string
   description = "the name of the database"
 }
+
+variable "data_private_subnets-1" {
+  type = string
+  description = "First subnet for the mount target"
+}
+
+variable "data_private_subnets-2" {
+  type = string
+  description = "Second subnet for the mount target"
+}
+
+variable "datalayer-sg" {
+  description = "webservers security group"
+  type        = string
+}

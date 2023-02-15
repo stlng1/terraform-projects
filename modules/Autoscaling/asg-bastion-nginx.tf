@@ -1,12 +1,3 @@
-#Get list of availability zones
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
-resource "random_shuffle" "az_list" {
-  input = [data.aws_availability_zones.available.names]
-}
-
 # ---- Autoscaling for bastion  hosts
 resource "aws_autoscaling_group" "bastionASG" {
   name                      = "${var.project_phase_name}-bastionASG"
@@ -17,8 +8,8 @@ resource "aws_autoscaling_group" "bastionASG" {
   desired_capacity          = var.capacity_asg["bastion"]
 
   vpc_zone_identifier = [
-    var.public_sbn-1,
-    var.public_sbn-2
+    var.public_subnets-1,
+    var.public_subnets-2
   ]
 
   launch_template {
@@ -45,8 +36,8 @@ resource "aws_autoscaling_group" "nginxASG" {
   desired_capacity          = var.capacity_asg["nginx"]
 
   vpc_zone_identifier = [
-    var.public_sbn-1,
-    var.public_sbn-2
+    var.public_subnets-1,
+    var.public_subnets-2
   ]
 
   launch_template {

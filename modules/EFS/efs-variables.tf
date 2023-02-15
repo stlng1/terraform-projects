@@ -17,3 +17,18 @@ variable "access_point" {
   type = list(any)
   description = "efs access point"
 }
+
+variable "data_private_subnets-1" {
+  type = string
+  description = "First subnet for the mount target"
+}
+
+variable "data_private_subnets-2" {
+  type = string
+  description = "Second subnet for the mount target"
+}
+
+variable "datalayer-sg" {
+  description = "webservers security group"
+  type        = string
+}

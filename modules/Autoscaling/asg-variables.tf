@@ -116,28 +116,28 @@ variable "instance_profile" {
   type        = string
 }
 
-variable "list_of_az" {
-  description = "available availability zones"
-  type        = map(string)
-  default     = {}
-}
+# variable "list_of_az" {
+#   description = "available availability zones"
+#   type        = map(string)
+#   default     = {}
+# }
 
-variable "public_sbn-1" {
+variable "public_subnets-1" {
   type        = string
   description = "public subnets"
 }
 
-variable "public_sbn-2" {
+variable "public_subnets-2" {
   type        = string
   description = "public subnets"
 }
 
-variable "compute_private_sbn-1" {
+variable "compute_private_subnets-1" {
   type        = string
   description = "compute private subnets"
 }
 
-variable "compute_private_sbn-2" {
+variable "compute_private_subnets-2" {
   type        = string
   description = "compute private subnets"
 }

@@ -7,8 +7,8 @@ resource "aws_lb" "publicALB" {
   ]
 
   subnets = [
-    var.public_sbn-1,
-    var.public_sbn-2
+    var.public_subnets-1,
+    var.public_subnets-2
   ]
 
   tags = merge(
@@ -64,8 +64,8 @@ resource "aws_lb" "privateALB" {
   ]
 
   subnets = [
-    var.compute_private_sbn-1,
-    var.compute_private_sbn-2
+    var.compute_private_subnets-1,
+    var.compute_private_subnets-2
   ]
 
   tags = merge(

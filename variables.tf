@@ -30,8 +30,14 @@ variable "db_name" {
   description = "the name of the database"
 }
 
-# variable "data_private_subnets" {
-#   type = list(any)
+# variable "data_private_subnets-1" {
+#   type = string
+#   description = "First subnet for the mount target"
+# }
+
+# variable "data_private_subnets-2" {
+#   type = string
+#   description = "Second subnet for the mount target"
 # }
 
 # variable "ami" {
@@ -50,11 +56,11 @@ variable "keypair" {
   description = "key pair for the instances"
 }
 
-# variable "tags" {
-#   description = "A mapping of tags to assign to all resources."
-#   type        = map(string)
-#   default     = {}
-# }
+variable "tags" {
+  description = "A mapping of tags to assign to all resources."
+  type        = map(string)
+  default     = {}
+}
 
 variable "max_size_asg" {
   description = "A mapping of he max_size for asg instances."
@@ -173,9 +179,9 @@ variable "master-password" {
   description = "RDS master password"
 }
 
-# variable "db_name" {
+# variable "datalayer-sg" {
 #   type        = string
-#   description = "the name of the database"
+#   description = "datalayer security group"
 # }
 
 # variable "tags" {
@@ -231,11 +237,6 @@ variable "data_private_subnets" {
 #   default     = {}
 # }
 
-
-
-
-
-
 # variable "preferred_number_of_public_subnets" {
 #   type = number
 # }
@@ -262,5 +263,3 @@ variable "ami_web" {
   type        = string
   description = "AMI image_ids for the launch templates"
 }
-
-

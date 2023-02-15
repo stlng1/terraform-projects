@@ -8,8 +8,8 @@ resource "aws_autoscaling_group" "wordpressASG" {
   desired_capacity          = var.capacity_asg["wordpress"]
   vpc_zone_identifier = [
 
-    var.compute_private_sbn-1,
-    var.compute_private_sbn-2
+    var.compute_private_subnets-1,
+    var.compute_private_subnets-2
   ]
 
   launch_template {
@@ -40,8 +40,8 @@ resource "aws_autoscaling_group" "toolingASG" {
 
   vpc_zone_identifier = [
 
-    var.compute_private_sbn-1,
-    var.compute_private_sbn-2
+    var.compute_private_subnets-1,
+    var.compute_private_subnets-2
   ]
 
   launch_template {
